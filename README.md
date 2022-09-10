@@ -5,13 +5,13 @@
 Скопируйте проект на свой компьютер:
 
 ```
-git clone https://github.com/LariosDeen/api_yamdb
+git clone https://github.com/Klyucherov/api_yamdb.git
 ```
 
 Cоздайте и активируйте виртуальное окружение для этого проекта:
 
 ```
-python3 -m venv env
+python -m venv env
 ```
 
 ```
@@ -21,7 +21,7 @@ source env/bin/activate
 Установите зависимости из файла requirements.txt:
 
 ```
-python3 -m pip install --upgrade pip
+python -m pip install --upgrade pip
 ```
 
 ```
@@ -37,19 +37,19 @@ cd api_yamdb
 Выполните миграции:
 
 ```
-python3 manage.py migrate
+python manage.py migrate
 ```
 
 Выполните загрузку данных в базу запустив management-команду:
 
 ```
-python3 manage.py fill_db
+python manage.py fill_db
 ```
 
 Запустите проект:
 
 ```
-python3 manage.py runserver
+python manage.py runserver
 ```
 
 ### Примеры
