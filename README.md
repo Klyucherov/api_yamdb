@@ -43,7 +43,7 @@ python manage.py migrate
 Выполните загрузку данных в базу запустив management-команду:
 
 ```
-python manage.py fill_db
+python manage.py load_data
 ```
 
 Запустите проект:
