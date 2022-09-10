@@ -1,31 +1,37 @@
-from csv import DictReader
+import csv
+
 from django.core.management import BaseCommand
+from reviews.models import (
+    User, Title, Category, Genre, GenreTitle, Review, Comment
+)
 
-from reviews.models import Review, Comment
-from titles.models import Category, Genre, GenreTitle, Title
-from users.models import User
+CSV_FILES = [
+    ['users.csv', User],
+    ['category.csv', Category],
+    ['genre.csv', Genre],
+    ['titles.csv', Title],
+    ['genre_title.csv', GenreTitle],
+    ['review.csv', Review],
+    ['comments.csv', Comment],
+]
 
-
-CSV_MODELS = {
-    Category: 'category.csv',
-    Comment: 'comments.csv',
-    Genre: 'genre.csv',
-    GenreTitle: 'genre_title.csv',
-    Review: 'review.csv',
-    Title: 'titles.csv',
-    User: 'users.csv'
-}
 
 class Command(BaseCommand):
-    help = "Loads data from static/data/*.csv files"
+    help = 'import csv data into database'
 
     def handle(self, *args, **options):
-        for model in CSV_MODELS.keys():
+
+        self.stdout.write(self.style.NOTICE('Очистка базы данных'))
+
+        for _, model in reversed(CSV_FILES):
             model.objects.all().delete()
 
-        for model, file in CSV_MODELS:
-            for row in DictReader(
-                open('static/data/'+ file, mode='r', encoding='utf-8')
-            ):
-                model.objects.get_or_create(**row)
-        self.stdout.write(self.style.SUCCESS("Success!"))
+        self.stdout.write(self.style.NOTICE('Подготовка новых данных'))
+
+        for file, model in CSV_FILES:
+            with open('static/data/' + file, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for dict_row in reader:
+                    model.objects.get_or_create(**dict_row)
+
+        self.stdout.write(self.style.SUCCESS('Новые данные внесены в базу'))
