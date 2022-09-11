@@ -17,6 +17,7 @@ CSV_MODELS = [
     [Comment, 'comments.csv'],
 ]
 
+
 class Command(BaseCommand):
     help = "Loads data from static/data/*.csv files"
 
@@ -28,7 +29,7 @@ class Command(BaseCommand):
 
         for model, file in CSV_MODELS:
             for row in DictReader(
-                open('static/data/'+ file, mode='r', encoding='utf-8')
+                open('static/data/' + file, mode='r', encoding='utf-8')
             ):
                 model.objects.get_or_create(**row)
         self.stdout.write(self.style.SUCCESS('Успешно!'))
