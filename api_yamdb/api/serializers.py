@@ -15,7 +15,7 @@ class CredentialsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ('username', 'email',)
         extra_kwargs = {'password': {'required': False}}
 
     def validate_email(self, value):
@@ -38,10 +38,10 @@ class CredentialsSerializer(serializers.ModelSerializer):
 class UserRoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            'username', 'email', 'role', 'bio', 'first_name', 'last_name'
-        ]
-        read_only_fields = ['role']
+        fields = (
+            'username', 'email', 'role', 'bio', 'first_name', 'last_name',
+        )
+        read_only_fields = ('role',)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -49,9 +49,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = [
-            'username', 'email', 'role', 'bio', 'first_name', 'last_name'
-        ]
+        fields = (
+            'username', 'email', 'role', 'bio', 'first_name', 'last_name',
+        )
 
     def validate_email(self, value):
         email = value.lower()

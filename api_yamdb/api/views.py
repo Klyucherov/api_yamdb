@@ -89,7 +89,7 @@ class UsersViewSet(viewsets.ModelViewSet):
     )
     def me_user(self, request, pk=None):
         """Обработка узла users/me"""
-        user = User.objects.get(username=request.user)
+        user = get_object_or_404(User, username=request.user)
         serializer = UserRoleSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -98,6 +98,7 @@ class UsersViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(CreateListDeleteViewSet):
+    """Операции связананные с категориями"""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
@@ -106,6 +107,7 @@ class CategoryViewSet(CreateListDeleteViewSet):
 
 
 class GenreViewSet(CreateListDeleteViewSet):
+    """Операции связананные с жанрами"""
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = (IsAdminOrReadOnly,)
@@ -114,6 +116,7 @@ class GenreViewSet(CreateListDeleteViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
+    """Операции связананные с названиями произведений"""
     queryset = Title.objects.all().annotate(
         Avg('reviews__score')).order_by('name')
     permission_classes = (IsAdminOrReadOnly,)
@@ -127,6 +130,7 @@ class TitleViewSet(viewsets.ModelViewSet):
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
+    """Операции связананные с отзывами"""
     serializer_class = ReviewSerializer
     permission_classes = (IsSuperuserAdminModeratorAuthorOrReadOnly,)
 
@@ -142,6 +146,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    """Операции связананные с комменатриями"""
     serializer_class = CommentSerializer
     permission_classes = (IsSuperuserAdminModeratorAuthorOrReadOnly,)
 

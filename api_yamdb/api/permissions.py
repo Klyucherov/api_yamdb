@@ -25,16 +25,12 @@ class IsSuperuserAdminModeratorAuthorOrReadOnly(BasePermission):
 
     def has_permission(self, request, view):
         safe_method = request.method in SAFE_METHODS
-        access = request.user.is_authenticated
-        return safe_method or access
+        return safe_method or request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
         safe_method = request.method in SAFE_METHODS
-        access = (request.user == obj.author
-                  or request.user.is_superuser
-                  or request.user.is_authenticated
-                  and request.user.is_admin
-                  or request.user.is_authenticated
-                  and request.user.is_moderator
-                  )
-        return safe_method or access
+        return safe_method or (
+            request.user == obj.author
+            or request.user.is_authenticated and (
+                request.user.is_admin or request.user.is_moderator
+            ))
