@@ -44,7 +44,7 @@ class UserRoleSerializer(serializers.ModelSerializer):
         read_only_fields = ('role',)
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(CredentialsSerializer):
     email = serializers.EmailField(required=True)
 
     class Meta:
@@ -52,14 +52,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'username', 'email', 'role', 'bio', 'first_name', 'last_name',
         )
-
-    def validate_email(self, value):
-        email = value.lower()
-        if User.objects.filter(email=email).exists():
-            raise serializers.ValidationError(
-                'Пользователь с таким email уже существует.'
-            )
-        return email
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
